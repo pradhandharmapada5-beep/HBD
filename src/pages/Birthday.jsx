@@ -70,12 +70,38 @@ export default function BirthdayPages() {
     audioPlayer.current.muted = isMuted;
   }, [isMuted]);
 
+  // Stop music on unmount
+  useEffect(() => {
+    const audio = audioPlayer.current;
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = "";
+    };
+  }, []);
+
+  // Stop music when page/tab hidden (screen off)
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden) {
+        const audio = audioPlayer.current;
+        audio.pause();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, []);
+
   // Page navigation with lock
   const next = () => {
     if (isChanging) return;
     setIsChanging(true);
     setPage((page + 1) % pages.length);
-    setTimeout(() => setIsChanging(false), 300); // prevent double trigger
+    setTimeout(() => setIsChanging(false), 300);
   };
 
   const prev = () => {
