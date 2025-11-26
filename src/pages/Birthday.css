@@ -1,3 +1,48 @@
+/* GLOBAL — remove tap highlight + remove scroll bounce */
+* {
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Disable mobile bounce scroll */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* PAGE CONTAINER */
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: white;
+  transition: background 0.5s ease-in-out;
+}
+
+/* CARD */
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  text-align: center;
+
+  max-height: 80vh;        /* fixes text cutoff */
+  overflow-y: auto;        /* ensures text always appears */
+}
+
+/* IMAGE — fits mobile screens */
 .card img {
   width: 100%;
   height: 47vh; /* mobile default */
@@ -30,4 +75,91 @@
   .card img {
     height: 75vh;
   }
+}
+
+
+
+/* TITLE */
+.card h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* MESSAGE */
+.card p {
+  font-size: 16px;
+  line-height: 1.4;
+  padding-bottom: 12px;
+}
+
+/* TOP-RIGHT BUTTONS */
+.top-right {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 999;
+}
+
+.btn {
+  padding: 7px 13px;
+  background: #242322;
+  color: #f4f4f4;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #585f3a;
+}
+
+/* ARROW BUTTONS */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  font-size: 32px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.left { left: 12px; }
+.right { right: 12px; }
+
+.arrow:hover {
+  background: white;
+  color: black;
+}
+
+/* DOTS */
+.dots {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: white;
+  opacity: 0.4;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  opacity: 1;
+  transform: scale(1.3);
 }
