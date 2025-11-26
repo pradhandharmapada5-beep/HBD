@@ -404,6 +404,8 @@
 
 
 
+// 
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -425,8 +427,8 @@ import m4 from "../assets/music/m1.mp3";
 export default function BirthdayPages() {
   const navigate = useNavigate();
 
-  // We create a single audio object
-  const audioPlayer = useRef(new Audio());
+  // One global audio player only
+  const audioRef = useRef(null);
 
   const [page, setPage] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
@@ -458,32 +460,38 @@ export default function BirthdayPages() {
     },
   ];
 
-  // Handle page change → change music without overlap
+  // LOAD AUDIO ONCE
   useEffect(() => {
-    const audio = audioPlayer.current;
-
-    // STOP old music first
-    audio.pause();
-    audio.currentTime = 0;
-
-    // LOAD new music
-    audio.src = pages[page].music;
+    const audio = new Audio();
     audio.loop = true;
+    audioRef.current = audio;
+  }, []);
+
+  // On page change → stop → load → play
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+
+    audio.pause();
+    audio.src = pages[page].music;
+    audio.currentTime = 0;
     audio.muted = isMuted;
 
-    // PLAY new music safely
     audio.play().catch(() => {});
   }, [page]);
 
-  // Handle mute
+  // Mute/unmute
   useEffect(() => {
-    audioPlayer.current.muted = isMuted;
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
   }, [isMuted]);
 
   const next = () => setPage((page + 1) % pages.length);
   const prev = () => setPage((page - 1 + pages.length) % pages.length);
-  const toggleMute = () => setIsMuted(!isMuted);
 
+  const toggleMute = () => setIsMuted((m) => !m);
   const logout = () => navigate("/");
 
   return (
