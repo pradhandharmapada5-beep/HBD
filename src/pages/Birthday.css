@@ -1,109 +1,119 @@
-/* FULL MOBILE RESET */
+/* GLOBAL — remove tap highlight + remove scroll bounce */
 * {
+  -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent; /* Remove tap stripe */
 }
 
+/* Disable mobile bounce scroll */
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Stop bounce scroll */
+  overflow-x: hidden;
+  overscroll-behavior: none;
   touch-action: manipulation;
 }
 
-body {
-  font-family: Arial, sans-serif;
-}
-
-/* MAIN PAGE */
+/* PAGE CONTAINER */
 .page-container {
   width: 100%;
-  height: 100vh; /* Full device height */
-  padding: 15px;
+  min-height: 100vh;
+  padding: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
   position: relative;
-  overflow: hidden; /* prevent jumping */
+  color: white;
   transition: background 0.5s ease-in-out;
 }
 
 /* CARD */
 .card {
   width: 100%;
-  max-width: 430px;
-  padding: 20px;
+  max-width: 420px;
+  padding: 18px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px);
   text-align: center;
 
-  /* Prevent zoom issues */
-  transform: translateZ(0);
+  max-height: 80vh;        /* fixes text cutoff */
+  overflow-y: auto;        /* ensures text always appears */
 }
 
+/* IMAGE — fits mobile screens */
 .card img {
   width: 100%;
-  height: auto;
   border-radius: 15px;
-  object-fit: contain;          /* FIT PERFECTLY */
-  max-height: 55vh;             /* No overflow */
+
+  max-height: 45vh;        /* ensures message is visible */
+  object-fit: cover;
+  margin-bottom: 12px;
 }
 
+/* TITLE */
 .card h1 {
   font-size: 22px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
+/* MESSAGE */
 .card p {
   font-size: 16px;
-  margin-top: 10px;
   line-height: 1.4;
-  padding: 0 5px;
+  padding-bottom: 12px;
 }
 
 /* TOP-RIGHT BUTTONS */
 .top-right {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: fixed;
+  top: 14px;
+  right: 14px;
   display: flex;
   gap: 10px;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .btn {
-  padding: 8px 12px;
+  padding: 7px 13px;
+  background: #242322;
+  color: #f4f4f4;
   font-size: 14px;
+  font-weight: bold;
   border: none;
   border-radius: 8px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  font-weight: bold;
   cursor: pointer;
 }
 
-/* ARROWS */
+.btn:hover {
+  background: #585f3a;
+}
+
+/* ARROW BUTTONS */
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 36px;
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.35);
   border: none;
+  font-size: 32px;
+  padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
-  user-select: none;
+
+  outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.left { left: 10px; }
-.right { right: 10px; }
+.left { left: 12px; }
+.right { right: 12px; }
+
+.arrow:hover {
+  background: white;
+  color: black;
+}
 
 /* DOTS */
 .dots {

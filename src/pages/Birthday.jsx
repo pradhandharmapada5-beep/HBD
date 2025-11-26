@@ -412,13 +412,13 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "./Birthday.css";
 
-// IMAGES
+// Images
 import pic1 from "../assets/image/p1.jpg";
 import pic2 from "../assets/image/p2.jpg";
 import pic3 from "../assets/image/p3.jpg";
 import pic4 from "../assets/image/p4.jpg";
 
-// MUSIC
+// Music
 import m1 from "../assets/music/m1.mp3";
 import m2 from "../assets/music/m1.mp3";
 import m3 from "../assets/music/m1.mp3";
@@ -426,6 +426,8 @@ import m4 from "../assets/music/m1.mp3";
 
 export default function BirthdayPages() {
   const navigate = useNavigate();
+
+  // One audio object — prevents overlapping
   const audioPlayer = useRef(new Audio());
 
   const [page, setPage] = useState(0);
@@ -440,13 +442,13 @@ export default function BirthdayPages() {
     },
     {
       img: pic2,
-      bg: "linear-gradient(135deg, #212912, #5c7131, #94b63f)",
+      bg: "linear-gradient(135deg, #212912ff, #5c7131ff, #94b63fff)",
       music: m2,
       msg: "Like your outfit, you bring calmness and brightness to everyone's life. 🌸💙",
     },
     {
       img: pic3,
-      bg: "linear-gradient(135deg, #094a41, #30aea0, #aaf4eb)",
+      bg: "linear-gradient(135deg, #094a41ff, #30aea0ff, #aaf4ebff)",
       music: m3,
       msg: "Your elegance and grace shine beautifully—wishing you joy always. 🌿💛",
     },
@@ -458,12 +460,13 @@ export default function BirthdayPages() {
     },
   ];
 
-  // CHANGE MUSIC ON PAGE SWITCH
+  // Change page music
   useEffect(() => {
     const audio = audioPlayer.current;
 
     audio.pause();
     audio.currentTime = 0;
+
     audio.src = pages[page].music;
     audio.loop = true;
     audio.muted = isMuted;
@@ -471,20 +474,23 @@ export default function BirthdayPages() {
     audio.play().catch(() => {});
   }, [page]);
 
+  // Handle mute toggle
   useEffect(() => {
     audioPlayer.current.muted = isMuted;
   }, [isMuted]);
 
   const next = () => setPage((page + 1) % pages.length);
   const prev = () => setPage((page - 1 + pages.length) % pages.length);
+  const toggleMute = () => setIsMuted(!isMuted);
+  const logout = () => navigate("/");
 
   return (
     <div className="page-container" style={{ background: pages[page].bg }}>
       
       {/* TOP BUTTONS */}
       <div className="top-right">
-        <button className="btn" onClick={() => navigate("/")}>Logout</button>
-        <button className="btn" onClick={() => setIsMuted(!isMuted)}>
+        <button className="btn" onClick={logout}>Logout</button>
+        <button className="btn" onClick={toggleMute}>
           {isMuted ? "Unmute" : "Mute"}
         </button>
       </div>
@@ -510,6 +516,7 @@ export default function BirthdayPages() {
         <h1>Happy Birthday Dear Sonila ❤️🎉</h1>
         <p>{pages[page].msg}</p>
       </div>
+
     </div>
   );
 }
