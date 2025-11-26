@@ -45,7 +45,7 @@ html, body {
 /* IMAGE — fits mobile screens */
 .card img {
   width: 100%;
-  height: 42vh;              /* FIX: perfect for iPhone */
+  height: 47vh;              /* FIX: perfect for iPhone */
   border-radius: 15px;
   object-fit: cover;
   object-position: center;
