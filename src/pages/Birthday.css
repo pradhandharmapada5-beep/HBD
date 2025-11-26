@@ -45,12 +45,19 @@ html, body {
 /* IMAGE — fits mobile screens */
 .card img {
   width: 100%;
+  height: 42vh;              /* FIX: perfect for iPhone */
   border-radius: 15px;
-
-  max-height: 45vh;        /* ensures message is visible */
   object-fit: cover;
+  object-position: center;
   margin-bottom: 12px;
+
+  /* 🔥 STANDARD PROPERTY */
+  mask-image: radial-gradient(circle, white 60%, transparent 100%);
+  
+  /* 🔥 SAFARI FIX (iPhone) */
+  -webkit-mask-image: -webkit-radial-gradient(white 60%, transparent 100%);
 }
+
 
 /* TITLE */
 .card h1 {
