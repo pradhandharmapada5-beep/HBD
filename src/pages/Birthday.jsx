@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +18,11 @@ import m4 from "../assets/music/m1.mp3";
 
 export default function BirthdayPages() {
   const navigate = useNavigate();
-
-  // One audio object — prevents overlapping
   const audioPlayer = useRef(new Audio());
 
   const [page, setPage] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [isChanging, setIsChanging] = useState(false); // page lock
 
   const pages = [
     {
@@ -54,7 +51,7 @@ export default function BirthdayPages() {
     },
   ];
 
-  // Change page music
+  // Play page music
   useEffect(() => {
     const audio = audioPlayer.current;
 
@@ -68,26 +65,38 @@ export default function BirthdayPages() {
     audio.play().catch(() => {});
   }, [page]);
 
-  // Handle mute toggle
+  // Mute toggle
   useEffect(() => {
     audioPlayer.current.muted = isMuted;
   }, [isMuted]);
 
-  const next = () => setPage((page + 1) % pages.length);
-  const prev = () => setPage((page - 1 + pages.length) % pages.length);
-  const toggleMute = () => setIsMuted(!isMuted);
-  const logout = () => {
-  const audio = audioPlayer.current;
-  audio.pause();
-  audio.currentTime = 0;
-  audio.src = "";
-  navigate("/");
-};
+  // Page navigation with lock
+  const next = () => {
+    if (isChanging) return;
+    setIsChanging(true);
+    setPage((page + 1) % pages.length);
+    setTimeout(() => setIsChanging(false), 300); // prevent double trigger
+  };
 
+  const prev = () => {
+    if (isChanging) return;
+    setIsChanging(true);
+    setPage((page - 1 + pages.length) % pages.length);
+    setTimeout(() => setIsChanging(false), 300);
+  };
+
+  const toggleMute = () => setIsMuted(!isMuted);
+
+  const logout = () => {
+    const audio = audioPlayer.current;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.src = "";
+    navigate("/");
+  };
 
   return (
     <div className="page-container" style={{ background: pages[page].bg }}>
-      
       {/* TOP BUTTONS */}
       <div className="top-right">
         <button className="btn" onClick={logout}>Logout</button>
@@ -117,7 +126,6 @@ export default function BirthdayPages() {
         <h1>Happy Birthday Dear Sonila ❤️🎉</h1>
         <p>{pages[page].msg}</p>
       </div>
-
     </div>
   );
 }
