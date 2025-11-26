@@ -1,110 +1,118 @@
-/* Prevent mobile zoom + remove tap highlight */
+/* FULL MOBILE RESET */
 * {
-  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* Remove tap stripe */
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* prevents page bounce/stripe */
+  overflow: hidden; /* Stop bounce scroll */
+  touch-action: manipulation;
 }
 
-/* Responsive fix */
 body {
-  touch-action: pan-y;
+  font-family: Arial, sans-serif;
 }
 
-/* Container */
+/* MAIN PAGE */
 .page-container {
-  width: 100vw;
-  height: 100vh;
-  padding: 20px;
+  width: 100%;
+  height: 100vh; /* Full device height */
+  padding: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   color: white;
-  box-sizing: border-box;
-  overflow: hidden;
+  position: relative;
+  overflow: hidden; /* prevent jumping */
+  transition: background 0.5s ease-in-out;
 }
 
-/* Card */
+/* CARD */
 .card {
-  width: 92%;
-  max-width: 420px;
-  padding: 22px;
+  width: 100%;
+  max-width: 430px;
+  padding: 20px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px);
   text-align: center;
+
+  /* Prevent zoom issues */
+  transform: translateZ(0);
 }
 
 .card img {
   width: 100%;
   height: auto;
   border-radius: 15px;
-  margin-bottom: 15px;
-  object-fit: cover;
+  object-fit: contain;          /* FIT PERFECTLY */
+  max-height: 55vh;             /* No overflow */
 }
 
 .card h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  line-height: 1.2;
+  font-size: 22px;
+  margin-top: 10px;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .card p {
-  font-size: 17px;
+  font-size: 16px;
+  margin-top: 10px;
   line-height: 1.4;
+  padding: 0 5px;
 }
 
-/* Top-right buttons */
+/* TOP-RIGHT BUTTONS */
 .top-right {
-  position: fixed;
-  top: 12px;
-  right: 12px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
   display: flex;
   gap: 10px;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .btn {
-  padding: 8px 14px;
-  background: rgb(36, 35, 34);
-  color: rgb(227, 217, 217);
-  font-weight: bold;
+  padding: 8px 12px;
+  font-size: 14px;
   border: none;
   border-radius: 8px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
 }
 
-/* Arrows */
+/* ARROWS */
 .arrow {
-  position: fixed;
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.35);
+  font-size: 36px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.3);
   border: none;
-  font-size: 32px;
-  padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
-  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.left { left: 15px; }
-.right { right: 15px; }
 
-/* Dots */
+.left { left: 10px; }
+.right { right: 10px; }
+
+/* DOTS */
 .dots {
   position: absolute;
-  bottom: 25px;
+  bottom: 20px;
   display: flex;
   gap: 8px;
 }
+
 .dot {
   width: 12px;
   height: 12px;
@@ -113,17 +121,8 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+
 .dot.active {
   opacity: 1;
   transform: scale(1.3);
-}
-
-/* Mobile text scaling fix */
-@media (max-width: 480px) {
-  .card h1 {
-    font-size: 20px;
-  }
-  .card p {
-    font-size: 16px;
-  }
 }

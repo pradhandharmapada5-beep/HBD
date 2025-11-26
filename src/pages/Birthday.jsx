@@ -412,13 +412,13 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "./Birthday.css";
 
-// Images
+// IMAGES
 import pic1 from "../assets/image/p1.jpg";
 import pic2 from "../assets/image/p2.jpg";
 import pic3 from "../assets/image/p3.jpg";
 import pic4 from "../assets/image/p4.jpg";
 
-// Music
+// MUSIC
 import m1 from "../assets/music/m1.mp3";
 import m2 from "../assets/music/m1.mp3";
 import m3 from "../assets/music/m1.mp3";
@@ -426,9 +426,7 @@ import m4 from "../assets/music/m1.mp3";
 
 export default function BirthdayPages() {
   const navigate = useNavigate();
-
-  // One global audio player only
-  const audioRef = useRef(null);
+  const audioPlayer = useRef(new Audio());
 
   const [page, setPage] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
@@ -442,13 +440,13 @@ export default function BirthdayPages() {
     },
     {
       img: pic2,
-      bg: "linear-gradient(135deg, #212912ff, #5c7131ff, #94b63fff)",
+      bg: "linear-gradient(135deg, #212912, #5c7131, #94b63f)",
       music: m2,
       msg: "Like your outfit, you bring calmness and brightness to everyone's life. 🌸💙",
     },
     {
       img: pic3,
-      bg: "linear-gradient(135deg, #094a41ff, #30aea0ff, #aaf4ebff)",
+      bg: "linear-gradient(135deg, #094a41, #30aea0, #aaf4eb)",
       music: m3,
       msg: "Your elegance and grace shine beautifully—wishing you joy always. 🌿💛",
     },
@@ -460,47 +458,33 @@ export default function BirthdayPages() {
     },
   ];
 
-  // LOAD AUDIO ONCE
+  // CHANGE MUSIC ON PAGE SWITCH
   useEffect(() => {
-    const audio = new Audio();
-    audio.loop = true;
-    audioRef.current = audio;
-  }, []);
-
-  // On page change → stop → load → play
-  useEffect(() => {
-    if (!audioRef.current) return;
-
-    const audio = audioRef.current;
+    const audio = audioPlayer.current;
 
     audio.pause();
-    audio.src = pages[page].music;
     audio.currentTime = 0;
+    audio.src = pages[page].music;
+    audio.loop = true;
     audio.muted = isMuted;
 
     audio.play().catch(() => {});
   }, [page]);
 
-  // Mute/unmute
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
+    audioPlayer.current.muted = isMuted;
   }, [isMuted]);
 
   const next = () => setPage((page + 1) % pages.length);
   const prev = () => setPage((page - 1 + pages.length) % pages.length);
-
-  const toggleMute = () => setIsMuted((m) => !m);
-  const logout = () => navigate("/");
 
   return (
     <div className="page-container" style={{ background: pages[page].bg }}>
       
       {/* TOP BUTTONS */}
       <div className="top-right">
-        <button className="btn" onClick={logout}>Logout</button>
-        <button className="btn" onClick={toggleMute}>
+        <button className="btn" onClick={() => navigate("/")}>Logout</button>
+        <button className="btn" onClick={() => setIsMuted(!isMuted)}>
           {isMuted ? "Unmute" : "Mute"}
         </button>
       </div>
